@@ -39,10 +39,10 @@ app.post('/add', async (req, res) => {
 });
 
 //Display Data
-app.get('/display', async(req, res) => {
+app.get('/display', async (req, res) => {
     //{} use karne se sara data aayega. Particular data chahiye toh use $where { foodName} aise kuch
     FoodModel.find({}, (err, result) => {
-        if(err) {
+        if (err) {
             res.send(err);
         }
         res.send(result);
@@ -50,27 +50,21 @@ app.get('/display', async(req, res) => {
 })
 
 //Delete Data
-// app.get('/delete', async(req, res) => {
-//     FoodModel.findByIdAndDelete({ $where: {
-//         foodName: foodName,
-//         daysSinceEaten: daysSinceEaten,
-//     }}, (err, result) => {
-//         if (err) {
-//             res.send(err);
-//         }
-//         res.send(result);
-//     })
-// })
+app.delete('/delete/:id', async (req, res) => {
+    const id = req.params.id;
+    await FoodModel.findByIdAndRemove(id).exec();
+    res.send('Deleted');
+})
 
 //Update Data , put is used for updating
-app.put('/update', async(req, res) => {
+app.put('/update', async (req, res) => {
     const newfoodName = req.body.newfoodName;
     const id = req.body.id;
 
     try {
         await FoodModel.findById(id, (err, Update) => {
             Update.foodName = newfoodName,
-            Update.save(); 
+                Update.save();
             res.send("Updated");
         })
     } catch (error) {
