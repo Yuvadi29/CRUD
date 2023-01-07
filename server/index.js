@@ -49,6 +49,36 @@ app.get('/display', async(req, res) => {
     })
 })
 
+//Delete Data
+// app.get('/delete', async(req, res) => {
+//     FoodModel.findByIdAndDelete({ $where: {
+//         foodName: foodName,
+//         daysSinceEaten: daysSinceEaten,
+//     }}, (err, result) => {
+//         if (err) {
+//             res.send(err);
+//         }
+//         res.send(result);
+//     })
+// })
+
+//Update Data , put is used for updating
+app.put('/update', async(req, res) => {
+    const newfoodName = req.body.newfoodName;
+    const id = req.body.id;
+
+    try {
+        await FoodModel.findById(id, (err, Update) => {
+            Update.foodName = newfoodName,
+            Update.save(); 
+            res.send("Updated");
+        })
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+
 app.listen(5000, () => {
     console.log("Server Running on Port 5000");
 })

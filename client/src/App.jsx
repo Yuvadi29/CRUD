@@ -17,7 +17,7 @@ const App = () => {
 
   const [foodName, setFoodName] = useState('');
   const [dayssinceEaten, setDaysSinceEaten] = useState(0);
-
+  const [newfoodName, setNewFoodName] = useState('');
   const [list, setList] = useState([]);
 
   const Add = async () => {
@@ -27,6 +27,29 @@ const App = () => {
         daysSinceEaten: dayssinceEaten,
       })
       alert("Data Added Successfully");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // const Delete = async () => {
+  //   try {
+  //     await axios.post('http://localhost:5000/delete', {
+  //       foodName: foodName,
+  //       daysSinceEaten: dayssinceEaten,
+  //     })
+  //     alert("Deleted Data Successfully");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+
+  const Update = async (id) => {
+    try {
+      await axios.put('http://localhost:5000/update', {
+        id: id,
+        newfoodName: newfoodName
+      })
     } catch (error) {
       console.log(error);
     }
@@ -47,14 +70,6 @@ const App = () => {
       <button onClick={Add}>Add To List</button>
 
       <h2>Food List</h2>
-      {/* <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">Food Name</th>
-            <th scope="col">Days Since the Food has been Eaten</th>
-          </tr>
-        </thead>
-      </table> */}
       {list.map((value, key) => {
         return <div key={key}>
           <div className="container">
@@ -68,6 +83,9 @@ const App = () => {
                 <div className="col col-2" >{value.daysSinceEaten}</div>
               </li>
             </ul>
+            <input type="text" placeholder='Replace Name' onChange={(e) => setNewFoodName(e.target.value)} />
+            <button onClick={() => Update(value._id)}>Update Food</button>
+            {/* <button onClick={Delete}>Delete</button> */}
           </div>
         </div>
       })}

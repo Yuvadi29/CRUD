@@ -58,7 +58,7 @@ h2 small {
   letter-spacing: 0.03em;
   color: #fff;
   font-weight: 500;
-  width: 500px;
+  width: 800px;
 }
 
 .responsive-table .table-row {
@@ -73,6 +73,7 @@ h2 small {
 .responsive-table .col-2 {
   flex-basis: 40%;
 }
+
 @media all and (max-width: 767px) {
   .responsive-table .table-header {
     display: none;
