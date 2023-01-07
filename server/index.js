@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const cors = require('cors');
 
 require('dotenv').config();
+
+app.use(cors());
 
 app.use(express.json()); //Allows us to receive information from frontend
 
@@ -16,18 +19,34 @@ mongoose.connect(process.env.MONGO_URL, {
 });
 
 
-app.get('/', async (req, res) => {
+app.post('/add', async (req, res) => {
+
+    //Grab the Data from the frontend
+    const foodName = req.body.foodName;
+    const daysSinceEaten = req.body.daysSinceEaten;
+
     const food = new FoodModel({
-        foodName: "Mango",
-        daysSinceEaten: 4,
+        foodName: foodName,
+        daysSinceEaten: daysSinceEaten,
     })
 
     try {
         await food.save();
-        res.send("Data Inserted");        
+        res.send("Data Inserted");
     } catch (error) {
         console.log(error);
     }
+});
+
+//Display Data
+app.get('/display', async(req, res) => {
+    //{} use karne se sara data aayega. Particular data chahiye toh use $where { foodName} aise kuch
+    FoodModel.find({}, (err, result) => {
+        if(err) {
+            res.send(err);
+        }
+        res.send(result);
+    })
 })
 
 app.listen(5000, () => {
